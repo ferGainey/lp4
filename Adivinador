@@ -1,0 +1,79 @@
+
+public class Adivinador {
+
+	private String nombreJugador;
+	private int[] numeroClave = new int[4];
+	private int numeroEnMismaPosicion;
+	private int numeroEnDistintaPosicion;
+	
+	public Adivinador(String nombre) {
+		this.nombreJugador = nombre;
+		for (int i = 0; i<this.numeroClave.length; i++){
+			this.numeroClave[i] = -1;
+		}
+	}
+
+	public void setNumeroClave(int[] numeroClave) {
+		this.numeroClave = numeroClave;
+	}
+
+	public void jugar(int[] otroNumero) {
+		if(comparacionLineal(otroNumero)){
+			System.out.println("Felicitaciones "+this.nombreJugador+" ha ganado.");
+			System.out.println("Números en la misma posición: "+this.numeroEnMismaPosicion);
+			return;
+		}else{
+			comparacionPorAtributo(otroNumero);
+			System.out.println("Números en la misma posición: "+this.numeroEnMismaPosicion);
+			System.out.println("Números en distinta posición: "+this.numeroEnDistintaPosicion);
+		}
+		
+	}
+
+	private void comparacionPorAtributo(int[] otroNumero) {
+		int comienzoRecorrido = this.numeroEnMismaPosicion;
+		
+		if(comienzoRecorrido!=0){
+			recorrerDesde(comienzoRecorrido,otroNumero);
+		}else{
+			recorrerDesde(comienzoRecorrido,otroNumero);
+		}		
+	}
+
+	private void recorrerDesde(int comienzoRecorrido, int[] otroNumero) {
+		for(int i = comienzoRecorrido; i<otroNumero.length;i++){
+			for(int j = 0; j<this.numeroClave.length; j++){
+				if(otroNumero[i]==this.numeroClave[j]){
+					this.numeroEnDistintaPosicion++;
+				}
+			}
+		}
+	}
+
+	private boolean comparacionLineal(int[] otroNumero) {
+		boolean estado = true;
+		
+		for(int i =0; (estado)&&(i<this.numeroClave.length); i++){
+			if(this.numeroClave[i]!=otroNumero[i]){
+				estado = false;
+			}else{				
+				this.numeroEnMismaPosicion++;
+			}
+		}
+		
+		return estado;
+	}
+
+	public int getNumerosMismaPosicion() {
+		return this.numeroEnMismaPosicion;
+	}
+	
+	public String getNombre(){
+		return this.nombreJugador;
+	}
+
+	public Object getNumerosDistintaPosicion() {
+		return this.numeroEnDistintaPosicion;
+	}
+	
+}

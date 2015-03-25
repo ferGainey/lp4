@@ -1,0 +1,57 @@
+import org.junit.Assert;
+import org.junit.Test;
+
+
+
+public class AdivinadorTest {
+
+	@Test
+	public void testJugada1(){
+		Adivinador jugador = new Adivinador("pepe");
+		int[] miNumero = {1,2,3,4};
+		int[] otroNumero = {1,2,3,4};
+		jugador.setNumeroClave(miNumero);
+				
+		jugador.jugar(otroNumero);
+		Assert.assertEquals("Números misma posición:", 4, jugador.getNumerosMismaPosicion());
+		
+	}
+	
+	@Test
+	public void testJugada2(){
+		Adivinador jugador = new Adivinador("pepe");
+		int[] miNumero = {1,2,3,4};
+		int[] otroNumero = {2,3,4,1};
+		jugador.setNumeroClave(miNumero);
+				
+		jugador.jugar(otroNumero);
+		Assert.assertEquals("Números distinta posición:", 4, jugador.getNumerosDistintaPosicion());
+		
+	}
+	
+	@Test
+	public void testJugada3(){
+		Adivinador jugador = new Adivinador("pepe");
+		int[] miNumero = {1,2,3,4};
+		int[] otroNumero = {1,2,0,7};
+		jugador.setNumeroClave(miNumero);
+				
+		jugador.jugar(otroNumero);
+		Assert.assertEquals("Números misma posición:", 2, jugador.getNumerosMismaPosicion());
+		Assert.assertEquals("Números distinta posición:", 0, jugador.getNumerosDistintaPosicion());
+		
+	}
+	
+	@Test
+	public void testJugada4(){
+		Adivinador jugador = new Adivinador("pepe");
+		int[] miNumero = {1,2,3,4};
+		int[] otroNumero = {7,8,5,6};
+		jugador.setNumeroClave(miNumero);
+				
+		jugador.jugar(otroNumero);
+		Assert.assertEquals("Números misma posición:", 0, jugador.getNumerosMismaPosicion());
+		Assert.assertEquals("Números distinta posición:", 0, jugador.getNumerosDistintaPosicion());
+		
+	}
+}

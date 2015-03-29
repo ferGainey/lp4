@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 
 public class Adivinador {
 
@@ -11,6 +13,41 @@ public class Adivinador {
 		for (int i = 0; i<this.numeroClave.length; i++){
 			this.numeroClave[i] = -1;
 		}
+		this.numeroEnDistintaPosicion=0;
+		this.numeroEnMismaPosicion=0;
+	}
+	
+	public static void main(String [] pps){
+		
+		Scanner miScan= new Scanner(System.in);
+		System.out.println("Ingrese su nombre:");
+		String miNombre = miScan.next();
+		Adivinador miAdivinador = new Adivinador(miNombre);
+		int[] unNumero = new int[4];
+		int[] otroNumero= new int[4];
+		
+		System.out.println("Ingrese 4 numeros entre el 0 y el 9 para adivinar");
+		
+		for(int i=0; i<miAdivinador.numeroClave.length; i++){
+			unNumero[i]= miScan.nextInt();
+		}
+		
+		miAdivinador.setNumeroClave(unNumero);
+		
+		System.out.println("\n Comienza el juego \n");
+		System.out.println("Ingrese 4 numeros entre el 0 y el 9");
+
+		int contador=1;
+		while(miAdivinador.getNumerosMismaPosicion()<4){
+			System.out.println("intento nro: "+ contador);
+			for(int i=0; i<miAdivinador.numeroClave.length; i++){
+				otroNumero[i]= miScan.nextInt();
+			}
+			miAdivinador.jugar(otroNumero);
+			contador++;
+		}
+		
+		
 	}
 
 	public void setNumeroClave(int[] numeroClave) {
@@ -18,6 +55,8 @@ public class Adivinador {
 	}
 
 	public void jugar(int[] otroNumero) {
+		this.numeroEnDistintaPosicion=0;
+		this.numeroEnMismaPosicion=0;
 		if(comparacionLineal(otroNumero)){
 			System.out.println("Felicitaciones "+this.nombreJugador+" ha ganado.");
 			System.out.println("Números en la misma posición: "+this.numeroEnMismaPosicion);
@@ -43,7 +82,7 @@ public class Adivinador {
 	private void recorrerDesde(int comienzoRecorrido, int[] otroNumero) {
 		for(int i = comienzoRecorrido; i<otroNumero.length;i++){
 			for(int j = 0; j<this.numeroClave.length; j++){
-				if(otroNumero[i]==this.numeroClave[j]){
+				if(otroNumero[i]==this.numeroClave[j] && i!=j){
 					this.numeroEnDistintaPosicion++;
 				}
 			}
@@ -72,7 +111,7 @@ public class Adivinador {
 		return this.nombreJugador;
 	}
 
-	public Object getNumerosDistintaPosicion() {
+	public int getNumerosDistintaPosicion() {
 		return this.numeroEnDistintaPosicion;
 	}
 	

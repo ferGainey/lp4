@@ -54,4 +54,12 @@ public class AdivinadorTest {
 		Assert.assertEquals("Números distinta posición:", 0, jugador.getNumerosDistintaPosicion());
 		
 	}
+	
+	@Test
+	public void testControl(){
+		Adivinador jugador = new Adivinador("pepe");
+		int[] miNumero = {1,2,3,4};
+		
+		Assert.assertTrue(jugador.controlDeNumeros1(1, miNumero));
+	}
 }

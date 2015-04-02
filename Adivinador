@@ -17,43 +17,114 @@ public class Adivinador {
 		this.numeroEnMismaPosicion=0;
 	}
 	
-	public static void main(String [] pps){
+	public static void main(String [] pps) throws MiExcepcion{
 		
 		Scanner miScan= new Scanner(System.in);
 		System.out.println("Ingrese su nombre:");
 		String miNombre = miScan.next();
 		Adivinador miAdivinador = new Adivinador(miNombre);
-		int[] unNumero = new int[4];
-		int[] otroNumero= new int[4];
+		int[] unVector = new int[4];
+		int[] otroVector= new int[4];
+		unVector = inicializarVector(unVector);
+		otroVector = inicializarVector(otroVector);
 		
-		System.out.println("Ingrese 4 numeros entre el 0 y el 9 para adivinar");
+		System.out.println("Ingrese 4 numeros sin repetir entre el 0 y el 9 para adivinar");
+		int aux=-1;
 		
-		for(int i=0; i<miAdivinador.numeroClave.length; i++){
-			unNumero[i]= miScan.nextInt();
-		}
+		ingresarNumeros(aux, unVector, miScan);
 		
-		miAdivinador.setNumeroClave(unNumero);
+		miAdivinador.setNumeroClave(unVector);
 		
 		System.out.println("\n Comienza el juego \n");
-		System.out.println("Ingrese 4 numeros entre el 0 y el 9");
+		System.out.println("Ingrese 4 numeros sin repetir entre el 0 y el 9");
 
 		int contador=1;
 		while(miAdivinador.getNumerosMismaPosicion()<4){
 			System.out.println("intento nro: "+ contador);
-			for(int i=0; i<miAdivinador.numeroClave.length; i++){
-				otroNumero[i]= miScan.nextInt();
-			}
-			miAdivinador.jugar(otroNumero);
+			ingresarNumeros(aux, otroVector, miScan);
+			miAdivinador.jugar(otroVector);
 			contador++;
 		}
 		
 		
 	}
 
+	/** pre: el numero a ingresar debe estar en [0,9] y sin repetir valores
+	 *  post: permite settear los numeros para jugar**/
+	private static void ingresarNumeros(int aux, int[] unVector, Scanner miScan) {
+		for(int i=0; i<unVector.length; i++){
+			
+			aux = miScan.nextInt();
+			while(!verificarNro(aux)){
+				System.out.println("El numero ha ingresar debe estar en [0,9]");
+				aux = miScan.nextInt();
+				
+			}
+			
+			while(controlDeIngreso(aux, unVector) || !verificarNro(aux)){
+				System.out.println("El numero ingresado no debe ser repetido y estar en [0,9]");
+				aux = miScan.nextInt();
+								
+			}
+			
+			unVector[i]= aux;	
+		}
+		
+	}
+
+	private static int[] inicializarVector(int[] unVector) {
+		for(int i=0; i<unVector.length; i++){
+			unVector[i]=-1;
+		}
+		return unVector;
+	}
+
+	public static boolean controlDeIngreso(int unNumero, int [] unVector){
+		boolean control= false;
+		int n = unVector.length-1;
+		for (int longitud = n; longitud > 0; longitud--){
+			if (unNumero == unVector[longitud-1]) {
+				System.out.println("no verifica precondición");
+				control=true;
+			
+			}
+		}
+		return control;
+	}
+
+	/** post: retorna verdadero si el numero está comprendido entre el 0 y 9 **/
+	public static boolean verificarNro(int unNumero){
+		boolean verificacion= false;
+		if(unNumero>=0 && unNumero<=9){
+			verificacion= true;
+		}
+		return verificacion;
+	}
+	
+	/** metodo creado para poder realizar los test **/
+	public boolean controlDeNumeros1(int aux, int [] unVector) {
+		boolean control= false;
+		int n = unVector.length-1;
+		for (int longitud = n; longitud > 0; longitud--){
+			if (aux == unVector[longitud-1]) {
+				System.out.println("no verifica precondición");
+				control=true;
+			
+			}
+		}
+		return control;
+	}
+	
 	public void setNumeroClave(int[] numeroClave) {
 		this.numeroClave = numeroClave;
 	}
 
+	
+	/** post: dado otra secuencia de numeros retorna
+	 * cuantos numeros hay en la misma y/o distinta posicion
+	 *  
+	 * @param otroNumero
+	 */
 	public void jugar(int[] otroNumero) {
 		this.numeroEnDistintaPosicion=0;
 		this.numeroEnMismaPosicion=0;
